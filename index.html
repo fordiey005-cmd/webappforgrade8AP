@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="fil">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BayanihanQuest — Araling Panlipunan Grade 8</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   BAYANIHAN QUEST — Grade 8 Araling Panlipunan Web App
+   Pure HTML/CSS/JS — No frameworks, no dependencies
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --surface2: #1e2530;
+  --surface3: #252d3a;
+  --border: #2d3748;
+  --accent: #e8a045;
+  --accent2: #4ecdc4;
+  --accent3: #ff6b6b;
+  --purple: #a78bfa;
+  --green: #34d399;
+  --text: #e8eaf0;
+  --muted: #8892a4;
+  --success: #56cfb2;
+  --q1: #e8a045;
+  --q2: #4ecdc4;
+  --q3: #a78bfa;
+  --q4: #ff6b6b;
+  --font-head: 'Fraunces', serif;
+  --font-body: 'DM Sans', sans-serif;
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ============================================================ SCREENS */
+.screen { display: none; min-height: 100vh; }
+.screen.active { display: block; }
+
+/* ============================================================ TYPOGRAPHY */
+h1, h2, h3 { font-family: var(--font-head); font-weight: 600; }
+h1 { font-size: clamp(24px, 5vw, 36px); line-height: 1.2; }
+h2 { font-size: clamp(18px, 3vw, 24px); }
+h3 { font-size: 17px; }
+em { font-style: italic; }
+p { color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+/* ============================================================ BUTTONS */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 8px; padding: 11px 22px; border-radius: var(--radius-sm);
+  font-family: var(--font-body); font-size: 14px; font-weight: 500;
+  cursor: pointer; border: none; transition: all 0.18s; text-decoration: none;
+}
+.btn-primary { background: var(--accent2); color: #042c2a; }
+.btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover { border-color: var(--accent2); }
+.btn-accent { background: var(--accent); color: #1a1000; }
+.btn-accent:hover { opacity: 0.88; }
+.btn-full { width: 100%; }
+.btn-lg { padding: 14px 28px; font-size: 15px; border-radius: var(--radius); }
+
+/* ============================================================ CARDS */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px;
+}
+.card-sm { padding: 14px; border-radius: var(--radius-sm); }
+
+/* ============================================================ INPUTS */
+.input-group { margin-bottom: 14px; }
+.input-label { font-size: 12px; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 6px; display: block; }
+.input-field {
+  width: 100%; background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 11px 14px; color: var(--text);
+  font-family: var(--font-body); font-size: 14px; outline: none;
+  transition: border-color 0.15s;
+}
+.input-field:focus { border-color: var(--accent2); }
+.input-field::placeholder { color: var(--border); }
+textarea.input-field { resize: vertical; min-height: 90px; line-height: 1.6; }
+
+/* ============================================================ TOPBAR */
+.topbar {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 12px 20px; display: flex; align-items: center;
+  justify-content: space-between; position: sticky; top: 0; z-index: 100;
+}
+.logo { font-family: var(--font-head); font-size: 18px; color: var(--accent); letter-spacing: 0.3px; cursor: pointer; }
+.logo span { color: var(--accent2); font-style: italic; }
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+.xp-display { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+.xp-bar-wrap { width: 80px; height: 5px; background: var(--surface3); border-radius: 3px; overflow: hidden; }
+.xp-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent2), var(--accent)); border-radius: 3px; transition: width 0.4s; }
+.xp-badge { background: var(--surface3); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; font-size: 12px; color: var(--accent); font-weight: 500; }
+.user-chip { display: flex; align-items: center; gap: 7px; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px 5px 5px; font-size: 13px; cursor: pointer; }
+.user-avatar { width: 24px; height: 24px; border-radius: 50%; background: var(--surface3); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--accent2); font-weight: 500; }
+
+/* ============================================================ BOTTOM NAV */
+.bottom-nav {
+  background: var(--surface); border-top: 1px solid var(--border);
+  display: flex; padding: 10px 0 18px; position: sticky; bottom: 0; z-index: 100;
+}
+.nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 10px; color: var(--muted); cursor: pointer; padding: 4px; transition: color 0.15s; }
+.nav-item.active { color: var(--accent); }
+.nav-icon { font-size: 19px; }
+
+/* ============================================================ TAGS & BADGES */
+.tag { font-size: 10px; padding: 2px 8px; border-radius: 6px; font-weight: 500; display: inline-block; }
+.tag-field { background: rgba(86,207,178,0.12); color: #56cfb2; }
+.tag-map { background: rgba(78,205,196,0.12); color: var(--q2); }
+.tag-debate { background: rgba(255,107,107,0.12); color: var(--q4); }
+.tag-roleplay { background: rgba(167,139,250,0.12); color: var(--q3); }
+.tag-story { background: rgba(232,160,69,0.12); color: var(--q1); }
+.tag-data { background: rgba(52,211,153,0.12); color: var(--green); }
+.tag-compare { background: rgba(251,191,36,0.12); color: #fbbf24; }
+.tag-create { background: rgba(239,68,68,0.12); color: #f87171; }
+.tag-interview { background: rgba(129,140,248,0.12); color: #818cf8; }
+
+.pill { font-size: 11px; padding: 3px 10px; border-radius: 12px; font-weight: 500; border: 1px solid; }
+
+/* ============================================================ PROGRESS BAR */
+.progress-wrap { height: 4px; background: var(--surface3); border-radius: 2px; overflow: hidden; margin-top: 10px; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.4s; }
+
+/* ============================================================ SECTION LABEL */
+.section-label { padding: 20px 20px 10px; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+
+/* ============================================================ FEEDBACK STRIP */
+.feedback-strip { background: rgba(86,207,178,0.08); border: 1px solid rgba(86,207,178,0.2); border-radius: var(--radius-sm); padding: 11px 14px; font-size: 13px; color: var(--success); margin-top: 12px; display: none; line-height: 1.5; }
+.feedback-strip.show { display: block; }
+
+/* ============================================================
+   SCREEN: LOGIN
+============================================================ */
+#screen-login {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 100vh; padding: 20px;
+  background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(78,205,196,0.08), transparent);
+}
+.login-box { width: 100%; max-width: 400px; }
+.login-logo { font-family: var(--font-head); font-size: 32px; color: var(--accent); text-align: center; margin-bottom: 4px; }
+.login-logo span { color: var(--accent2); font-style: italic; }
+.login-tagline { text-align: center; color: var(--muted); font-size: 13px; margin-bottom: 28px; }
+.login-tabs { display: flex; background: var(--surface2); border-radius: var(--radius-sm); padding: 3px; margin-bottom: 20px; gap: 3px; }
+.login-tab { flex: 1; padding: 8px; border-radius: 6px; text-align: center; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--muted); transition: all 0.15s; }
+.login-tab.active { background: var(--surface); color: var(--text); }
+.login-form { display: none; }
+.login-form.active { display: block; }
+.login-divider { text-align: center; color: var(--muted); font-size: 12px; margin: 14px 0; position: relative; }
+.login-divider::before, .login-divider::after { content: ''; position: absolute; top: 50%; width: 40%; height: 1px; background: var(--border); }
+.login-divider::before { left: 0; } .login-divider::after { right: 0; }
+.class-code-box { background: var(--surface2); border: 2px dashed var(--border); border-radius: var(--radius-sm); padding: 16px; text-align: center; margin-bottom: 14px; }
+.class-code-label { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+.class-code-input { background: transparent; border: none; color: var(--accent2); font-size: 24px; font-weight: 500; text-align: center; width: 100%; outline: none; font-family: var(--font-body); letter-spacing: 4px; }
+.login-note { font-size: 12px; color: var(--muted); text-align: center; margin-top: 12px; line-height: 1.5; }
+.consent-check { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 14px; }
+.consent-check input { margin-top: 3px; flex-shrink: 0; accent-color: var(--accent2); }
+.consent-check label { font-size: 12px; color: var(--muted); line-height: 1.5; cursor: pointer; }
+
+/* ============================================================
+   SCREEN: HOME (Dashboard)
+============================================================ */
+#screen-home { padding-bottom: 80px; }
+.hero { padding: 28px 20px 16px; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 100% 80% at 50% 0%, rgba(78,205,196,0.06), transparent); pointer-events: none; }
+.hero-eyebrow { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent2); margin-bottom: 8px; font-weight: 500; }
+.hero-greeting { font-family: var(--font-head); font-size: clamp(20px, 4vw, 28px); color: var(--text); line-height: 1.3; margin-bottom: 6px; }
+.hero-greeting em { color: var(--accent); }
+.hero-sub { color: var(--muted); font-size: 13px; max-width: 400px; }
+
+.quest-path { display: flex; gap: 6px; padding: 14px 20px; overflow-x: auto; scrollbar-width: none; }
+.path-step { font-size: 11px; padding: 4px 12px; border-radius: 12px; border: 1px solid var(--border); color: var(--muted); background: var(--surface2); white-space: nowrap; flex-shrink: 0; cursor: pointer; transition: all 0.15s; }
+.path-step.active { border-color: var(--accent2); color: var(--accent2); background: rgba(78,205,196,0.08); }
+.path-step.done { border-color: var(--success); color: var(--success); background: rgba(86,207,178,0.08); }
+
+.active-mission-card { margin: 0 16px 16px; background: var(--surface); border: 1px solid var(--accent2); border-radius: var(--radius); padding: 18px; position: relative; overflow: hidden; }
+.active-mission-card::before { content: 'AKTIBONG MISYON'; position: absolute; top: 14px; right: 14px; font-size: 9px; letter-spacing: 1.5px; color: var(--accent2); font-weight: 500; }
+.active-mission-header { display: flex; gap: 12px; margin-bottom: 14px; }
+.active-mission-icon { font-size: 28px; flex-shrink: 0; }
+.active-mission-title { font-family: var(--font-head); font-size: 16px; color: var(--text); margin-bottom: 3px; }
+.active-mission-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.mission-steps { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.step-item { display: flex; align-items: center; gap: 9px; padding: 9px 11px; background: var(--surface2); border-radius: var(--radius-sm); font-size: 13px; }
+.step-dot { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; flex-shrink: 0; }
+.step-dot.done { background: rgba(86,207,178,0.2); color: var(--success); }
+.step-dot.current { background: rgba(232,160,69,0.2); color: var(--accent); }
+.step-dot.todo { background: var(--surface3); color: var(--muted); }
+.step-text { flex: 1; color: var(--text); }
+.step-text.done-text { color: var(--muted); text-decoration: line-through; }
+.step-type { font-size: 10px; padding: 2px 7px; border-radius: 6px; background: var(--surface3); color: var(--muted); }
+
+.missions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 10px; padding: 0 16px 16px; }
+.mission-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px; cursor: pointer; transition: all 0.18s; position: relative; overflow: hidden; }
+.mission-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+.mission-card.locked { opacity: 0.45; cursor: not-allowed; }
+.mission-card.locked:hover { transform: none; border-color: var(--border); }
+.mission-glow { position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.mission-card.q1 .mission-glow { background: var(--q1); }
+.mission-card.q2 .mission-glow { background: var(--q2); }
+.mission-card.q3 .mission-glow { background: var(--q3); }
+.mission-card.q4 .mission-glow { background: var(--q4); }
+.mission-emoji { font-size: 22px; margin-bottom: 9px; display: block; }
+.mission-name { font-family: var(--font-head); font-size: 13px; color: var(--text); margin-bottom: 3px; line-height: 1.3; }
+.mission-topic { font-size: 11px; color: var(--muted); margin-bottom: 9px; line-height: 1.3; }
+.mission-footer { display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
+.mission-xp { color: var(--accent); font-weight: 500; }
+.mission-type { color: var(--muted); background: var(--surface2); padding: 2px 7px; border-radius: 6px; }
+.lock-icon { position: absolute; top: 12px; right: 12px; font-size: 13px; color: var(--muted); }
+
+.tools-row { display: flex; gap: 8px; padding: 0 16px 16px; overflow-x: auto; scrollbar-width: none; }
+.tool-chip { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 11px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; min-width: 68px; transition: all 0.15s; text-align: center; flex-shrink: 0; }
+.tool-chip:hover { border-color: var(--accent2); background: rgba(78,205,196,0.05); }
+.tool-chip-icon { font-size: 19px; }
+.tool-chip-label { font-size: 10px; color: var(--muted); white-space: nowrap; }
+
+.news-card { margin: 0 16px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.news-header { padding: 11px 15px; border-bottom: 1px solid var(--border); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent2); font-weight: 500; }
+.news-item { padding: 11px 15px; border-bottom: 1px solid var(--border); display: flex; gap: 10px; }
+.news-item:last-child { border-bottom: none; }
+.news-tag { font-size: 9px; padding: 2px 7px; border-radius: 5px; font-weight: 500; flex-shrink: 0; margin-top: 2px; }
+.news-tag.ekon { background: rgba(232,160,69,0.15); color: var(--accent); }
+.news-tag.hist { background: rgba(78,205,196,0.15); color: var(--accent2); }
+.news-tag.soc { background: rgba(167,139,250,0.15); color: var(--purple); }
+.news-text { font-size: 12px; color: var(--text); line-height: 1.4; }
+.news-link { font-size: 11px; color: var(--accent2); margin-top: 3px; cursor: pointer; }
+.news-link:hover { text-decoration: underline; }
+
+/* ============================================================
+   SCREEN: MISSION (Activity)
+============================================================ */
+#screen-mission { padding-bottom: 80px; }
+.mission-topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 16px; display: flex; align-items: center; gap: 12px; }
+.back-btn { background: none; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 7px 12px; color: var(--muted); font-size: 13px; cursor: pointer; font-family: var(--font-body); transition: all 0.15s; }
+.back-btn:hover { color: var(--text); border-color: var(--text); }
+.mission-topbar-info { flex: 1; }
+.mission-topbar-title { font-family: var(--font-head); font-size: 14px; color: var(--text); line-height: 1.2; }
+.mission-topbar-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+.activity-tabs { display: flex; gap: 6px; padding: 14px 16px; overflow-x: auto; scrollbar-width: none; }
+.activity-tab { padding: 7px 14px; border-radius: 20px; border: 1px solid var(--border); color: var(--muted); font-size: 12px; font-weight: 500; cursor: pointer; background: var(--surface); transition: all 0.15s; white-space: nowrap; flex-shrink: 0; }
+.activity-tab.active { background: var(--accent2); color: #042c2a; border-color: transparent; }
+
+.activity-panel { display: none; padding: 0 16px 16px; }
+.activity-panel.active { display: block; }
+
+.activity-banner { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; margin-bottom: 16px; display: flex; gap: 12px; }
+.activity-banner-icon { font-size: 22px; flex-shrink: 0; }
+.activity-banner-q { font-family: var(--font-head); font-size: 14px; color: var(--text); line-height: 1.4; margin-bottom: 2px; }
+.activity-banner-sub { font-size: 11px; color: var(--muted); }
+
+/* Field Obs */
+.field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.field-cell { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; }
+.field-cell label { font-size: 11px; color: var(--muted); display: block; margin-bottom: 4px; }
+.field-cell input { background: transparent; border: none; color: var(--text); font-size: 13px; font-family: var(--font-body); width: 100%; outline: none; }
+.field-cell input::placeholder { color: var(--border); }
+.photo-upload { background: var(--surface2); border: 2px dashed var(--border); border-radius: var(--radius); padding: 20px; text-align: center; color: var(--muted); font-size: 13px; cursor: pointer; margin-bottom: 12px; transition: all 0.15s; }
+.photo-upload:hover { border-color: var(--accent2); color: var(--accent2); }
+.photo-icon { font-size: 24px; display: block; margin-bottom: 6px; }
+.word-count-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-top: 5px; }
+.mini-progress { height: 5px; background: var(--surface3); border-radius: 3px; overflow: hidden; margin-top: 8px; }
+.mini-progress-fill { height: 100%; background: var(--accent2); border-radius: 3px; transition: width 0.3s; }
+
+/* Debate */
+.stance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.stance-card { background: var(--surface2); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 14px; cursor: pointer; text-align: center; transition: all 0.18s; }
+.stance-card:hover { border-color: var(--accent); }
+.stance-card.chosen { border-color: var(--accent2); background: rgba(78,205,196,0.07); }
+.stance-icon { font-size: 24px; margin-bottom: 7px; display: block; }
+.stance-title { font-weight: 500; font-size: 13px; color: var(--text); margin-bottom: 3px; }
+.stance-desc { font-size: 11px; color: var(--muted); }
+.evidence-block { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 11px 13px; margin-bottom: 8px; }
+.evidence-block label { font-size: 11px; color: var(--muted); display: block; margin-bottom: 5px; }
+.evidence-block textarea { width: 100%; background: transparent; border: none; color: var(--text); font-family: var(--font-body); font-size: 13px; outline: none; line-height: 1.5; resize: none; }
+.evidence-block textarea::placeholder { color: var(--border); }
+.add-evidence-btn { width: 100%; background: transparent; border: 1px dashed var(--border); border-radius: var(--radius-sm); padding: 9px; color: var(--muted); font-size: 12px; cursor: pointer; font-family: var(--font-body); margin-bottom: 12px; transition: all 0.15s; }
+.add-evidence-btn:hover { border-color: var(--accent2); color: var(--accent2); }
+
+/* Roleplay */
+.scenario-box { background: var(--surface2); border-left: 3px solid var(--purple); border-radius: 0 var(--radius) var(--radius) 0; padding: 14px 16px; margin-bottom: 14px; font-size: 13px; color: var(--text); line-height: 1.7; font-style: italic; }
+.choice-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+.choice-item { background: var(--surface2); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 12px 14px; cursor: pointer; transition: all 0.15s; display: flex; gap: 10px; align-items: flex-start; }
+.choice-item:hover { border-color: var(--purple); }
+.choice-item.chosen { border-color: var(--purple); background: rgba(167,139,250,0.07); }
+.choice-letter { width: 22px; height: 22px; border-radius: 50%; background: var(--surface3); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; color: var(--muted); flex-shrink: 0; }
+.choice-item.chosen .choice-letter { background: rgba(167,139,250,0.2); color: var(--purple); }
+.choice-text { font-size: 13px; color: var(--text); line-height: 1.4; }
+.consequence-box { background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.25); border-radius: var(--radius); padding: 14px; font-size: 13px; color: var(--text); line-height: 1.6; margin-bottom: 14px; display: none; }
+.consequence-box.show { display: block; }
+.consequence-title { font-weight: 500; color: var(--purple); display: block; margin-bottom: 8px; }
+
+/* Create */
+.output-types { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 12px; }
+.output-type { padding: 6px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); font-size: 12px; color: var(--muted); cursor: pointer; background: var(--surface); transition: all 0.15s; }
+.output-type.active { border-color: var(--accent); color: var(--accent); background: rgba(232,160,69,0.08); }
+.prompt-box { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 13px; margin-bottom: 10px; font-size: 12px; color: var(--muted); line-height: 1.5; }
+.prompt-box strong { color: var(--text); font-weight: 500; }
+
+/* ============================================================
+   SCREEN: CURRICULUM MAP
+============================================================ */
+#screen-map { padding-bottom: 80px; }
+.map-header { padding: 20px 16px 12px; }
+.map-quarter-tabs { display: flex; gap: 6px; padding: 0 16px 14px; flex-wrap: wrap; }
+.map-qtab { padding: 7px 14px; border-radius: 20px; border: 1px solid var(--border); color: var(--muted); font-size: 12px; font-weight: 500; cursor: pointer; background: var(--surface); transition: all 0.15s; }
+.map-qtab.q1.active { background: var(--q1); color: #1a1000; border-color: transparent; }
+.map-qtab.q2.active { background: var(--q2); color: #042c2a; border-color: transparent; }
+.map-qtab.q3.active { background: var(--q3); color: #1a1030; border-color: transparent; }
+.map-qtab.q4.active { background: var(--q4); color: #1a0000; border-color: transparent; }
+.quarter-panel { display: none; padding: 0 16px; }
+.quarter-panel.active { display: block; }
+.q-banner { border-radius: var(--radius); padding: 16px; margin-bottom: 14px; }
+.q-banner.q1 { background: rgba(232,160,69,0.1); border: 1px solid rgba(232,160,69,0.25); }
+.q-banner.q2 { background: rgba(78,205,196,0.1); border: 1px solid rgba(78,205,196,0.25); }
+.q-banner.q3 { background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.25); }
+.q-banner.q4 { background: rgba(255,107,107,0.1); border: 1px solid rgba(255,107,107,0.25); }
+.q-banner-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; margin-bottom: 5px; }
+.q1 .q-banner-label { color: var(--q1); }
+.q2 .q-banner-label { color: var(--q2); }
+.q3 .q-banner-label { color: var(--q3); }
+.q4 .q-banner-label { color: var(--q4); }
+.q-banner-title { font-family: var(--font-head); font-size: 16px; color: var(--text); margin-bottom: 4px; }
+.q-banner-desc { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 10px; }
+.q-stats { display: flex; gap: 14px; }
+.q-stat { font-size: 11px; color: var(--muted); }
+.q-stat strong { color: var(--text); font-weight: 500; }
+.mission-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+.map-mission-row { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 13px 14px; cursor: pointer; transition: all 0.15s; display: flex; gap: 10px; align-items: flex-start; position: relative; }
+.map-mission-row:hover { background: var(--surface2); }
+.map-mission-num { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; flex-shrink: 0; margin-top: 2px; }
+.q1 .map-mission-num { background: rgba(232,160,69,0.15); color: var(--q1); }
+.q2 .map-mission-num { background: rgba(78,205,196,0.15); color: var(--q2); }
+.q3 .map-mission-num { background: rgba(167,139,250,0.15); color: var(--q3); }
+.q4 .map-mission-num { background: rgba(255,107,107,0.15); color: var(--q4); }
+.map-mission-content { flex: 1; }
+.map-mission-title { font-family: var(--font-head); font-size: 13px; color: var(--text); margin-bottom: 2px; line-height: 1.3; }
+.map-mission-topic { font-size: 11px; color: var(--muted); margin-bottom: 7px; }
+.map-mission-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+.map-mission-xp { position: absolute; top: 13px; right: 13px; font-size: 11px; color: var(--muted); }
+
+/* ============================================================
+   SCREEN: JOURNAL
+============================================================ */
+#screen-journal { padding-bottom: 80px; }
+.journal-header { padding: 20px 16px 12px; }
+.journal-empty { padding: 40px 20px; text-align: center; color: var(--muted); }
+.journal-empty-icon { font-size: 40px; display: block; margin-bottom: 12px; }
+.journal-entry { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px; margin: 0 16px 10px; }
+.journal-entry-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+.journal-mission { font-family: var(--font-head); font-size: 13px; color: var(--text); }
+.journal-date { font-size: 11px; color: var(--muted); }
+.journal-type { font-size: 10px; margin-bottom: 6px; }
+.journal-preview { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* ============================================================
+   SCREEN: PROFILE
+============================================================ */
+#screen-profile { padding-bottom: 80px; }
+.profile-header { padding: 24px 16px 16px; text-align: center; }
+.profile-avatar-lg { width: 70px; height: 70px; border-radius: 50%; background: var(--surface2); border: 2px solid var(--accent2); display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 500; color: var(--accent2); margin: 0 auto 12px; font-family: var(--font-head); }
+.profile-name { font-family: var(--font-head); font-size: 20px; color: var(--text); margin-bottom: 3px; }
+.profile-class { font-size: 13px; color: var(--muted); }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 0 16px 16px; }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; text-align: center; }
+.stat-value { font-family: var(--font-head); font-size: 24px; color: var(--text); margin-bottom: 3px; }
+.stat-label { font-size: 11px; color: var(--muted); }
+.badges-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 16px 16px; }
+.badge-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; text-align: center; }
+.badge-card.earned { border-color: var(--accent); }
+.badge-card.locked { opacity: 0.4; }
+.badge-icon { font-size: 22px; display: block; margin-bottom: 5px; }
+.badge-name { font-size: 10px; color: var(--muted); line-height: 1.3; }
+.badge-card.earned .badge-name { color: var(--accent); }
+.settings-list { padding: 0 16px; }
+.settings-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 13px 15px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.15s; }
+.settings-item:hover { background: var(--surface2); }
+.settings-item-left { display: flex; align-items: center; gap: 10px; }
+.settings-icon { font-size: 16px; }
+.settings-label { font-size: 13px; color: var(--text); }
+.settings-arrow { color: var(--muted); font-size: 13px; }
+
+/* ============================================================ TOAST */
+.toast {
+  position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: var(--surface); border: 1px solid var(--accent2); border-radius: var(--radius);
+  padding: 11px 20px; font-size: 13px; color: var(--success); z-index: 999;
+  opacity: 0; transition: all 0.3s; pointer-events: none; white-space: nowrap;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ============================================================ MODAL */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+.modal-overlay.show { opacity: 1; pointer-events: all; }
+.modal-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius) var(--radius) 0 0; padding: 20px; width: 100%; max-width: 500px; transform: translateY(30px); transition: transform 0.25s; }
+.modal-overlay.show .modal-box { transform: translateY(0); }
+.modal-title { font-family: var(--font-head); font-size: 18px; color: var(--text); margin-bottom: 5px; }
+.modal-desc { font-size: 13px; color: var(--muted); margin-bottom: 18px; line-height: 1.5; }
+.modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: var(--muted); font-size: 18px; cursor: pointer; }
+
+/* ============================================================ UTILITIES */
+.text-center { text-align: center; }
+.mt-8 { margin-top: 8px; }
+.mt-12 { margin-top: 12px; }
+.mt-16 { margin-top: 16px; }
+.mb-8 { margin-bottom: 8px; }
+.mb-12 { margin-bottom: 12px; }
+.gap-8 { gap: 8px; }
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.color-accent { color: var(--accent); }
+.color-accent2 { color: var(--accent2); }
+.color-muted { color: var(--muted); }
+.font-head { font-family: var(--font-head); }
+hr.divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================ TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ============================================================ MODAL: XP EARNED -->
+<div class="modal-overlay" id="modal-xp">
+  <div class="modal-box" style="position:relative;text-align:center">
+    <div style="font-size:48px;margin-bottom:12px">⭐</div>
+    <div class="modal-title" id="modal-xp-title">Magaling!</div>
+    <div class="modal-desc" id="modal-xp-desc">Nakakuha ka ng XP!</div>
+    <div style="font-size:32px;font-family:var(--font-head);color:var(--accent);margin-bottom:18px" id="modal-xp-amount">+80 XP</div>
+    <button class="btn btn-primary btn-full" onclick="closeModal('modal-xp')">Magpatuloy →</button>
+  </div>
+</div>
+
+<!-- ============================================================ SCREEN: LOGIN -->
+<div class="screen active" id="screen-login">
+  <div style="padding:20px;max-width:440px;margin:0 auto">
+    <div style="height:40px"></div>
+    <div class="login-logo">Bayanihan<span>Quest</span></div>
+    <div class="login-tagline">Araling Panlipunan Grade 8 · Tuklasin ang iyong mundo</div>
+
+    <div class="login-tabs">
+      <div class="login-tab active" onclick="switchLoginTab('student')">Estudyante</div>
+      <div class="login-tab" onclick="switchLoginTab('teacher')">Guro</div>
+    </div>
+
+    <!-- Student Login -->
+    <div class="login-form active" id="login-student">
+      <div class="card" style="margin-bottom:14px">
+        <div class="input-group">
+          <label class="input-label">Iyong Pangalan (First name)</label>
+          <input class="input-field" id="student-name" placeholder="hal. Maria" maxlength="30">
+        </div>
+        <div class="input-label" style="margin-bottom:8px">Class Code mula sa inyong Guro</div>
+        <div class="class-code-box">
+          <div class="class-code-label">I-type ang 6-digit na code</div>
+          <input class="class-code-input" id="class-code" placeholder="ABC123" maxlength="6">
+        </div>
+        <div class="consent-check">
+          <input type="checkbox" id="consent" style="margin-top:2px">
+          <label for="consent">Pumayag ako sa paggamit ng app ayon sa patakaran ng BayanihanQuest. Alam ng aking magulang/guardian na gagamit ako ng app na ito para sa paaralan.</label>
+        </div>
+        <button class="btn btn-primary btn-full" onclick="loginStudent()">Pumasok sa Quest →</button>
+      </div>
+      <div class="login-note">Walang email o password na kailangan. Ang class code ay ibibibigay ng inyong guro.</div>
+    </div>
+
+    <!-- Teacher Login -->
+    <div class="login-form" id="login-teacher">
+      <div class="card">
+        <div class="input-group">
+          <label class="input-label">Pangalan ng Guro</label>
+          <input class="input-field" placeholder="Ilagay ang inyong pangalan">
+        </div>
+        <div class="input-group">
+          <label class="input-label">School ID</label>
+          <input class="input-field" placeholder="hal. SCH-2024-001">
+        </div>
+        <div class="input-group" style="margin-bottom:0">
+          <label class="input-label">Pangalan ng Klase / Seksyon</label>
+          <input class="input-field" placeholder="hal. Grade 8 - Sampaguita">
+        </div>
+        <hr class="divider">
+        <button class="btn btn-primary btn-full" onclick="loginTeacher()">Gumawa ng Klase →</button>
+      </div>
+      <div class="login-note">Ang class code ay awtomatikong gagawin pagkatapos mag-setup. Ibigay ito sa inyong mga estudyante.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ SCREEN: HOME -->
+<div class="screen" id="screen-home">
+  <div class="topbar">
+    <div class="logo" onclick="goHome()">Bayanihan<span>Quest</span></div>
+    <div class="topbar-right">
+      <div class="xp-display">
+        <div class="xp-bar-wrap"><div class="xp-bar-fill" id="xp-bar" style="width:60%"></div></div>
+        <div class="xp-badge" id="xp-label">240 XP</div>
+      </div>
+      <div class="user-chip" onclick="goScreen('profile')">
+        <div class="user-avatar" id="user-avatar-sm">M</div>
+        <span id="user-name-sm" style="font-size:13px;color:var(--text)">Maria</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-eyebrow">Araling Panlipunan · Grade 8</div>
+    <h1 class="hero-greeting">Ikaw ang <em>Tagasaliksik</em><br>ng iyong komunidad.</h1>
+    <p class="hero-sub" style="margin-top:8px">Tuklasin ang kasaysayan, ekonomiya, at lipunan sa pamamagitan ng tunay na misyon.</p>
+  </div>
+
+  <div class="quest-path">
+    <div class="path-step done">Q1 · Heograpiya</div>
+    <div class="path-step done">Q2 · Klasiko</div>
+    <div class="path-step active">Q3 · Modernong Daigdig</div>
+    <div class="path-step">Q4 · Kontemporaryo</div>
+  </div>
+
+  <!-- Active Mission -->
+  <div class="active-mission-card">
+    <div class="active-mission-header">
+      <div class="active-mission-icon">🏪</div>
+      <div>
+        <div class="active-mission-title">Bakit Mahal ang Bigas?</div>
+        <div class="active-mission-desc">Imbestigahan ang presyo ng pagkain sa inyong pamilihan. Ikonekta ito sa inflation at supply chain.</div>
+      </div>
+    </div>
+    <div class="mission-steps">
+      <div class="step-item">
+        <div class="step-dot done">✓</div>
+        <div class="step-text done-text">Basahin: Ano ang inflation?</div>
+        <div class="step-type">Teksto</div>
+      </div>
+      <div class="step-item">
+        <div class="step-dot current">2</div>
+        <div class="step-text">Obserbahan: Itala ang 5 presyo</div>
+        <div class="step-type">Field</div>
+      </div>
+      <div class="step-item">
+        <div class="step-dot todo">3</div>
+        <div class="step-text">Suriin: I-graph ang iyong data</div>
+        <div class="step-type">Data</div>
+      </div>
+      <div class="step-item">
+        <div class="step-dot todo">4</div>
+        <div class="step-text">Ipaliwanag: Gawin ang iyong teorya</div>
+        <div class="step-type">Essay</div>
+      </div>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="openMission('inflation')">Simulan ang Hakbang 2 →</button>
+  </div>
+
+  <div class="section-label">Piliin ang susunod na misyon</div>
+  <div class="missions-grid">
+    <div class="mission-card q2" onclick="openMission('athens')">
+      <div class="mission-glow"></div>
+      <span class="mission-emoji">⚔️</span>
+      <div class="mission-name">Athens o Sparta?</div>
+      <div class="mission-topic">Kabihasnan ng Greece · Q2</div>
+      <div class="mission-footer"><span class="mission-xp">+100 XP</span><span class="mission-type">Debate</span></div>
+      <div class="progress-wrap"><div class="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div class="mission-card q2" onclick="openMission('feudalism')">
+      <div class="mission-glow"></div>
+      <span class="mission-emoji">👑</span>
+      <div class="mission-name">Hari, Panginoon, Magsasaka</div>
+      <div class="mission-topic">Piyudalismo · Q2</div>
+      <div class="mission-footer"><span class="mission-xp">+100 XP</span><span class="mission-type">Roleplay</span></div>
+      <div class="progress-wrap"><div class="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div class="mission-card q3" onclick="openMission('colonialism')">
+      <div class="mission-glow"></div>
+      <span class="mission-emoji">🗺️</span>
+      <div class="mission-name">Sino ang Nakinabang?</div>
+      <div class="mission-topic">Kolonisasyon · Q3</div>
+      <div class="mission-footer"><span class="mission-xp">+100 XP</span><span class="mission-type">Debate</span></div>
+      <div class="progress-wrap"><div class="progress-fill" style="width:30%"></div></div>
+    </div>
+    <div class="mission-card q3" onclick="openMission('revolution')">
+      <div class="mission-glow"></div>
+      <span class="mission-emoji">⚙️</span>
+      <div class="mission-name">Ang Makina ay Nagbago ng Lahat</div>
+      <div class="mission-topic">Rebolusyong Industriyal · Q3</div>
+      <div class="mission-footer"><span class="mission-xp">+100 XP</span><span class="mission-type">Create</span></div>
+      <div class="progress-wrap"><div class="progress-fill" style="width:75%"></div></div>
+    </div>
+    <div class="mission-card q4" onclick="openMission('wwi')">
+      <div class="mission-glow"></div>
+      <span class="mission-emoji">🌍</span>
+      <div class="mission-name">Isang Bala ang Nagpaputok ng Digmaan</div>
+      <div class="mission-topic">WWI · Q4</div>
+      <div class="mission-footer"><span class="mission-xp">+90 XP</span><span class="mission-type">Timeline</span></div>
+      <div class="progress-wrap"><div class="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div class="mission-card q4 locked">
+      <div class="mission-glow"></div>
+      <span class="lock-icon">🔒</span>
+      <span class="mission-emoji">🌐</span>
+      <div class="mission-name">Cold War at Tayo</div>
+      <div class="mission-topic">I-unlock sa Lv. 6</div>
+      <div class="mission-footer"><span class="mission-xp">+120 XP</span><span class="mission-type">Debate</span></div>
+    </div>
+  </div>
+
+  <div class="section-label">Mga Kasangkapan</div>
+  <div class="tools-row">
+    <div class="tool-chip" onclick="showToast('Field Journal — lahat ng iyong mga obserbasyon')">
+      <span class="tool-chip-icon">📓</span>
+      <span class="tool-chip-label">Field Journal</span>
+    </div>
+    <div class="tool-chip" onclick="showToast('Concept Map — ikonekta ang mga ideya')">
+      <span class="tool-chip-icon">🧩</span>
+      <span class="tool-chip-label">Konsepto</span>
+    </div>
+    <div class="tool-chip" onclick="showToast('Community Lens — balita sa iyong mundo')">
+      <span class="tool-chip-icon">🔭</span>
+      <span class="tool-chip-label">Community Lens</span>
+    </div>
+    <div class="tool-chip" onclick="showToast('Data Builder — gumawa ng graph')">
+      <span class="tool-chip-icon">📊</span>
+      <span class="tool-chip-label">Data Builder</span>
+    </div>
+    <div class="tool-chip" onclick="showToast('Debate Room — makipagtalo gamit ang ebidensya')">
+      <span class="tool-chip-icon">🗣️</span>
+      <span class="tool-chip-label">Debate Room</span>
+    </div>
+    <div class="tool-chip" onclick="goScreen('profile')">
+      <span class="tool-chip-icon">🏆</span>
+      <span class="tool-chip-label">Mga Natamo</span>
+    </div>
+  </div>
+
+  <div class="section-label">Community Lens — Balita sa Iyong Mundo</div>
+  <div class="news-card">
+    <div class="news-header">Ikonekta ang Balita sa AP</div>
+    <div class="news-item">
+      <span class="news-tag ekon">EKON</span>
+      <div>
+        <div class="news-text">Tumaas ang presyo ng bigas ng 18% ngayong buwan sa Mindanao</div>
+        <div class="news-link" onclick="openMission('inflation')">→ Ikonekta sa: Inflation, Supply Chain</div>
+      </div>
+    </div>
+    <div class="news-item">
+      <span class="news-tag hist">KASAY</span>
+      <div>
+        <div class="news-text">Ipinagdiwang ang ika-126 anibersaryo ng Araw ng Kalayaan sa buong bansa</div>
+        <div class="news-link">→ Ikonekta sa: Rebolusyong Pilipino, Kolonyalismo</div>
+      </div>
+    </div>
+    <div class="news-item">
+      <span class="news-tag soc">LIPUNAN</span>
+      <div>
+        <div class="news-text">Naglunsad ng bagong programa para sa mga kabataang out-of-school sa Davao</div>
+        <div class="news-link">→ Ikonekta sa: Papel ng Gobyerno, Social Welfare</div>
+      </div>
+    </div>
+  </div>
+  <div style="height:10px"></div>
+
+  <div class="bottom-nav">
+    <div class="nav-item active" onclick="goScreen('home')"><span class="nav-icon">🏠</span><span>Home</span></div>
+    <div class="nav-item" onclick="goScreen('map')"><span class="nav-icon">🗺️</span><span>Mapa</span></div>
+    <div class="nav-item" onclick="goScreen('journal')"><span class="nav-icon">📓</span><span>Journal</span></div>
+    <div class="nav-item" onclick="goScreen('profile')"><span class="nav-icon">👤</span><span>Profile</span></div>
+  </div>
+</div>
+
+<!-- ============================================================ SCREEN: MISSION -->
+<div class="screen" id="screen-mission">
+  <div class="mission-topbar">
+    <button class="back-btn" onclick="goHome()">← Bumalik</button>
+    <div class="mission-topbar-info">
+      <div class="mission-topbar-title" id="mission-title-bar">Bakit Mahal ang Bigas?</div>
+      <div class="mission-topbar-meta" id="mission-meta-bar">Q3 · Ekonomiya · Hakbang 2 ng 4</div>
+    </div>
+  </div>
+
+  <div class="activity-tabs">
+    <div class="activity-tab active" onclick="switchActivity('field')">📷 Field Obs.</div>
+    <div class="activity-tab" onclick="switchActivity('debate')">⚔️ Debate</div>
+    <div class="activity-tab" onclick="switchActivity('roleplay')">👑 Roleplay</div>
+    <div class="activity-tab" onclick="switchActivity('create')">✍️ Gumawa</div>
+  </div>
+
+  <!-- Field Observation Panel -->
+  <div class="activity-panel active" id="panel-field">
+    <div class="activity-banner">
+      <span class="activity-banner-icon">🏪</span>
+      <div>
+        <div class="activity-banner-q" id="field-q">Bakit Mahal ang Bigas? — Obserbahan ang mga presyo sa inyong palengke o tindahan.</div>
+        <div class="activity-banner-sub">M3 · Ekonomiya · Field Observation</div>
+      </div>
+    </div>
+    <div class="section-label" style="padding:0 0 8px">Itala ang iyong mga naobserbahan</div>
+    <div class="field-grid">
+      <div class="field-cell"><label>Produkto 1</label><input placeholder="hal. Bigas (5kg)" id="f-prod1"></div>
+      <div class="field-cell"><label>Presyo (₱)</label><input type="number" placeholder="0.00" id="f-price1"></div>
+      <div class="field-cell"><label>Produkto 2</label><input placeholder="hal. Manok (1kg)"></div>
+      <div class="field-cell"><label>Presyo (₱)</label><input type="number" placeholder="0.00"></div>
+      <div class="field-cell"><label>Produkto 3</label><input placeholder="hal. Itlog (12 pcs)"></div>
+      <div class="field-cell"><label>Presyo (₱)</label><input type="number" placeholder="0.00"></div>
+      <div class="field-cell"><label>Produkto 4</label><input placeholder="hal. Asukal (1kg)"></div>
+      <div class="field-cell"><label>Presyo (₱)</label><input type="number" placeholder="0.00"></div>
+      <div class="field-cell"><label>Produkto 5</label><input placeholder="hal. Mantika (1L)"></div>
+      <div class="field-cell"><label>Presyo (₱)</label><input type="number" placeholder="0.00"></div>
+    </div>
+    <div class="photo-upload" id="photo-upload" onclick="fakeUpload()">
+      <span class="photo-icon" id="photo-icon">📷</span>
+      I-upload ang larawan ng presyo o resibo (opsyonal)
+    </div>
+    <div class="section-label" style="padding:0 0 8px">Iyong Obserbasyon</div>
+    <textarea class="input-field" id="obs-text" rows="5" placeholder="Ano ang napansin mo? Mahal ba? Mura? Bakit sa palagay mo? Ilarawan ang iyong nakita sa palengke..." oninput="updateProgress('obs-text','obs-prog','obs-pct',60)"></textarea>
+    <div class="word-count-row"><span id="obs-pct">0 salita</span><span>Minimum: 60 salita</span></div>
+    <div class="mini-progress"><div class="mini-progress-fill" id="obs-prog" style="width:0%"></div></div>
+    <div style="margin-top:10px;font-size:12px;color:var(--muted)">+30 XP sa pagkumpleto ng hakbang na ito</div>
+    <button class="btn btn-primary btn-full mt-12" onclick="submitActivity('Field Observation','obs-field')">I-save ang Obserbasyon →</button>
+    <div class="feedback-strip" id="obs-field">Magaling! Ang iyong obserbasyon ay nai-save sa iyong Field Journal. Sa susunod na hakbang, gagawin mo itong graph para makita ang pattern ng mga presyo.</div>
+  </div>
+
+  <!-- Debate Panel -->
+  <div class="activity-panel" id="panel-debate">
+    <div class="activity-banner">
+      <span class="activity-banner-icon">⚔️</span>
+      <div>
+        <div class="activity-banner-q">Athens o Sparta? — Alin ang mas magandang lipunan para mabuhay?</div>
+        <div class="activity-banner-sub">M2 · Q2 · Kasaysayan · Debate Activity</div>
+      </div>
+    </div>
+    <div class="section-label" style="padding:0 0 8px">Piliin ang iyong posisyon</div>
+    <div class="stance-grid">
+      <div class="stance-card" id="stance-athens" onclick="chooseStance('athens')">
+        <span class="stance-icon">🏛️</span>
+        <div class="stance-title">Athens</div>
+        <div class="stance-desc">Edukasyon, sining, demokrasya</div>
+      </div>
+      <div class="stance-card" id="stance-sparta" onclick="chooseStance('sparta')">
+        <span class="stance-icon">⚔️</span>
+        <div class="stance-title">Sparta</div>
+        <div class="stance-desc">Lakas, disiplina, pagkakaisa</div>
+      </div>
+    </div>
+    <div class="section-label" style="padding:0 0 8px">Mga Ebidensya (minimum 2)</div>
+    <div id="evidence-container">
+      <div class="evidence-block"><label>Ebidensya 1</label><textarea rows="2" placeholder="Ipaliwanag ang isang dahilan kung bakit mas maganda ang iyong piniling lipunan..."></textarea></div>
+      <div class="evidence-block"><label>Ebidensya 2</label><textarea rows="2" placeholder="Bigyan ng isa pang dahilan gamit ang mga natutunan sa klase..."></textarea></div>
+    </div>
+    <button class="add-evidence-btn" onclick="addEvidence()">+ Magdagdag ng ebidensya</button>
+    <div class="section-label" style="padding:0 0 8px">Kontra-argumento</div>
+    <textarea class="input-field" rows="3" placeholder="Kahit may kahinaan ang aking piniling lipunan, mas mas mahusay ito kaysa sa kabila dahil..."></textarea>
+    <button class="btn btn-primary btn-full mt-12" onclick="submitActivity('Debate','fb-debate')">Isumite ang Debate →</button>
+    <div class="feedback-strip" id="fb-debate">Napakagaling! Ang iyong argumento ay naitala. Makikita mo kung paano nagkakaiba ang sagot ng iyong mga kamag-aral.</div>
+  </div>
+
+  <!-- Roleplay Panel -->
+  <div class="activity-panel" id="panel-roleplay">
+    <div class="activity-banner">
+      <span class="activity-banner-icon">👑</span>
+      <div>
+        <div class="activity-banner-q">Hari, Panginoon, Magsasaka — Ikaw ay isang magsasaka sa Europa noong ika-10 siglo.</div>
+        <div class="activity-banner-sub">M9 · Q2 · Piyudalismo · Roleplay Activity</div>
+      </div>
+    </div>
+    <div class="scenario-box">"Nag-aalok sa iyo ang iyong panginoon (lord) ng proteksyon at lupang maaari mong sakahin — ngunit kailangan mong ibigay ang kalahati ng iyong ani at maglingkod sa hukbo tuwing may digmaan. Tatanggap ka ba?"</div>
+    <div class="section-label" style="padding:0 0 8px">Piliin ang iyong desisyon</div>
+    <div class="choice-list">
+      <div class="choice-item" id="choice-a" onclick="pickChoice('a')">
+        <div class="choice-letter" id="cl-a">A</div>
+        <div class="choice-text">Oo, tatanggap ako. Kailangan ko ng proteksyon para sa aking pamilya.</div>
+      </div>
+      <div class="choice-item" id="choice-b" onclick="pickChoice('b')">
+        <div class="choice-letter" id="cl-b">B</div>
+        <div class="choice-text">Hindi, magsisikap akong maging malaya at hanapin ang ibang paraan.</div>
+      </div>
+      <div class="choice-item" id="choice-c" onclick="pickChoice('c')">
+        <div class="choice-letter" id="cl-c">C</div>
+        <div class="choice-text">Makikipag-usap muna ako at susubukang mag-negotiate ng mas magandang kondisyon.</div>
+      </div>
+    </div>
+    <div class="consequence-box" id="consequence-box"></div>
+    <div class="section-label" style="padding:0 0 8px">Bakit mo ito pinili?</div>
+    <textarea class="input-field" rows="4" placeholder="Sa aking palagay, ang tamang desisyon ay... dahil..."></textarea>
+    <button class="btn btn-primary btn-full mt-12" onclick="submitActivity('Roleplay','fb-roleplay')">Isumite ang aking Desisyon →</button>
+    <div class="feedback-strip" id="fb-roleplay">Naitala ang iyong desisyon at dahilan. Iba-iba ang pipiliin ng mga estudyante — lahat ay tama basta may malinaw na dahilan!</div>
+  </div>
+
+  <!-- Create Panel -->
+  <div class="activity-panel" id="panel-create">
+    <div class="activity-banner">
+      <span class="activity-banner-icon">✍️</span>
+      <div>
+        <div class="activity-banner-q">Paano Nagbago ang Mundo? — Gumawa ng iyong sariling output.</div>
+        <div class="activity-banner-sub">M10 · Q3 · Synthesis Mission · Create Activity</div>
+      </div>
+    </div>
+    <div class="section-label" style="padding:0 0 8px">Piliin ang uri ng output</div>
+    <div class="output-types">
+      <div class="output-type active" onclick="setOutputType(this,'essay')">Sanaysay</div>
+      <div class="output-type" onclick="setOutputType(this,'letter')">Liham</div>
+      <div class="output-type" onclick="setOutputType(this,'headline')">Headline</div>
+      <div class="output-type" onclick="setOutputType(this,'speech')">Talumpati</div>
+      <div class="output-type" onclick="setOutputType(this,'comic')">Komiks Script</div>
+    </div>
+    <div class="prompt-box" id="create-prompt-box">
+      <strong>Prompt:</strong> Ipaliwanag kung paano nakaapekto ang Rebolusyong Industriyal sa buhay ng mga manggagawa — at ikonekta ito sa isang katotohanan sa inyong komunidad ngayon.
+    </div>
+    <textarea class="input-field" rows="10" id="create-text" placeholder="Simulan ang iyong sagot dito..." oninput="updateCreateProgress()"></textarea>
+    <div class="word-count-row"><span id="create-wc">0 salita</span><span>Minimum: 80 salita</span></div>
+    <div class="mini-progress"><div class="mini-progress-fill" id="create-prog" style="width:0%"></div></div>
+    <button class="btn btn-primary btn-full mt-12" onclick="submitActivity('Create','fb-create')">Isumite ang Output →</button>
+    <div class="feedback-strip" id="fb-create">Naisumite na ang iyong gawa! Maaari itong ibahagi sa klase o i-review ng iyong guro sa Teacher Dashboard.</div>
+  </div>
+
+  <div style="height:20px"></div>
+</div>
+
+<!-- ============================================================ SCREEN: MAP -->
+<div class="screen" id="screen-map">
+  <div class="topbar">
+    <div class="logo" onclick="goHome()">Bayanihan<span>Quest</span></div>
+    <div class="topbar-right">
+      <div class="xp-badge" id="xp-label-map">240 XP</div>
+    </div>
+  </div>
+  <div class="map-header">
+    <h2 style="font-family:var(--font-head);font-size:20px;color:var(--text);margin-bottom:3px">Curriculum Map</h2>
+    <p style="font-size:13px">Lahat ng 39 misyon — Q1 hanggang Q4</p>
+  </div>
+  <div class="map-quarter-tabs">
+    <div class="map-qtab q1 active" onclick="switchMapQ('q1')">Q1 · Heograpiya</div>
+    <div class="map-qtab q2" onclick="switchMapQ('q2')">Q2 · Klasiko</div>
+    <div class="map-qtab q3" onclick="switchMapQ('q3')">Q3 · Moderno</div>
+    <div class="map-qtab q4" onclick="switchMapQ('q4')">Q4 · Kontemp.</div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="quarter-panel q1 active" id="qpanel-q1">
+    <div class="q-banner q1">
+      <div class="q-banner-label">Unang Markahan</div>
+      <div class="q-banner-title">Heograpiya at mga Sinaunang Kabihasnan</div>
+      <div class="q-banner-desc">Gamitin ang mapa at heograpiya bilang lens para maunawaan kung bakit nabuo ang mga unang kabihasnan.</div>
+      <div class="q-stats"><div class="q-stat"><strong>8</strong> Misyon</div><div class="q-stat"><strong>720</strong> XP</div></div>
+    </div>
+    <div class="mission-list q1" id="missions-q1"></div>
+  </div>
+  <!-- Q2 -->
+  <div class="quarter-panel q2" id="qpanel-q2">
+    <div class="q-banner q2">
+      <div class="q-banner-label">Ikalawang Markahan</div>
+      <div class="q-banner-title">Ang Daigdig sa Klasiko at Transisyonal na Panahon</div>
+      <div class="q-banner-desc">Tuklasin ang mga dakilang kabihasnan at ang kanilang mga kontribusyon na nararamdaman pa rin ngayon.</div>
+      <div class="q-stats"><div class="q-stat"><strong>10</strong> Misyon</div><div class="q-stat"><strong>940</strong> XP</div></div>
+    </div>
+    <div class="mission-list q2" id="missions-q2"></div>
+  </div>
+  <!-- Q3 -->
+  <div class="quarter-panel q3" id="qpanel-q3">
+    <div class="q-banner q3">
+      <div class="q-banner-label">Ikatlong Markahan</div>
+      <div class="q-banner-title">Ang Pag-usbong ng Makabagong Daigdig</div>
+      <div class="q-banner-desc">Alamin kung paano naging pandaigdig ang kapangyarihan ng Europa — at kung paano ito nakaapekto sa Pilipinas.</div>
+      <div class="q-stats"><div class="q-stat"><strong>10</strong> Misyon</div><div class="q-stat"><strong>1,000</strong> XP</div></div>
+    </div>
+    <div class="mission-list q3" id="missions-q3"></div>
+  </div>
+  <!-- Q4 -->
+  <div class="quarter-panel q4" id="qpanel-q4">
+    <div class="q-banner q4">
+      <div class="q-banner-label">Ikaapat na Markahan</div>
+      <div class="q-banner-title">Ang Kontemporanyong Daigdig</div>
+      <div class="q-banner-desc">Mula sa mga digmaan ng ika-20 siglo hanggang sa hamon ng mundo ngayon.</div>
+      <div class="q-stats"><div class="q-stat"><strong>11</strong> Misyon</div><div class="q-stat"><strong>1,100</strong> XP</div></div>
+    </div>
+    <div class="mission-list q4" id="missions-q4"></div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="goScreen('home')"><span class="nav-icon">🏠</span><span>Home</span></div>
+    <div class="nav-item active" onclick="goScreen('map')"><span class="nav-icon">🗺️</span><span>Mapa</span></div>
+    <div class="nav-item" onclick="goScreen('journal')"><span class="nav-icon">📓</span><span>Journal</span></div>
+    <div class="nav-item" onclick="goScreen('profile')"><span class="nav-icon">👤</span><span>Profile</span></div>
+  </div>
+</div>
+
+<!-- ============================================================ SCREEN: JOURNAL -->
+<div class="screen" id="screen-journal">
+  <div class="topbar">
+    <div class="logo" onclick="goHome()">Bayanihan<span>Quest</span></div>
+  </div>
+  <div class="journal-header">
+    <h2 style="font-family:var(--font-head);font-size:20px;color:var(--text);margin-bottom:3px">Field Journal</h2>
+    <p style="font-size:13px">Lahat ng iyong mga sagot, obserbasyon, at output.</p>
+  </div>
+  <div id="journal-entries">
+    <div class="journal-empty">
+      <span class="journal-empty-icon">📓</span>
+      <div style="font-family:var(--font-head);font-size:16px;color:var(--text);margin-bottom:6px">Walang entry pa</div>
+      <div style="font-size:13px">Kumpletuhin ang iyong unang aktibidad para makita ang iyong mga sagot dito.</div>
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="goScreen('home')"><span class="nav-icon">🏠</span><span>Home</span></div>
+    <div class="nav-item" onclick="goScreen('map')"><span class="nav-icon">🗺️</span><span>Mapa</span></div>
+    <div class="nav-item active" onclick="goScreen('journal')"><span class="nav-icon">📓</span><span>Journal</span></div>
+    <div class="nav-item" onclick="goScreen('profile')"><span class="nav-icon">👤</span><span>Profile</span></div>
+  </div>
+</div>
+
+<!-- ============================================================ SCREEN: PROFILE -->
+<div class="screen" id="screen-profile">
+  <div class="topbar">
+    <div class="logo" onclick="goHome()">Bayanihan<span>Quest</span></div>
+  </div>
+  <div class="profile-header">
+    <div class="profile-avatar-lg" id="profile-avatar">M</div>
+    <div class="profile-name" id="profile-name">Maria</div>
+    <div class="profile-class" id="profile-class">Grade 8 - Sampaguita · Class ABC123</div>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-value" id="stat-xp">240</div><div class="stat-label">XP</div></div>
+    <div class="stat-card"><div class="stat-value" id="stat-missions">3</div><div class="stat-label">Misyon</div></div>
+    <div class="stat-card"><div class="stat-value">Lv.4</div><div class="stat-label">Antas</div></div>
+  </div>
+  <div class="section-label">Mga Natamo</div>
+  <div class="badges-grid">
+    <div class="badge-card earned"><span class="badge-icon">🗺️</span><div class="badge-name">Manlalakbay</div></div>
+    <div class="badge-card earned"><span class="badge-icon">🔍</span><div class="badge-name">Tagasaliksik</div></div>
+    <div class="badge-card earned"><span class="badge-icon">📓</span><div class="badge-name">Manunulat</div></div>
+    <div class="badge-card locked"><span class="badge-icon">⚔️</span><div class="badge-name">Mang-aaway</div></div>
+    <div class="badge-card locked"><span class="badge-icon">🏛️</span><div class="badge-name">Istoryador</div></div>
+    <div class="badge-card locked"><span class="badge-icon">🌍</span><div class="badge-name">Pandaigdig</div></div>
+    <div class="badge-card locked"><span class="badge-icon">🏆</span><div class="badge-name">Kampeon</div></div>
+    <div class="badge-card locked"><span class="badge-icon">⭐</span><div class="badge-name">Bayani</div></div>
+  </div>
+  <div class="section-label">Mga Setting</div>
+  <div class="settings-list">
+    <div class="settings-item" onclick="showToast('Privacy settings — coming soon')">
+      <div class="settings-item-left"><span class="settings-icon">🔒</span><span class="settings-label">Privacy at Data</span></div>
+      <span class="settings-arrow">›</span>
+    </div>
+    <div class="settings-item" onclick="showToast('I-download ang iyong data')">
+      <div class="settings-item-left"><span class="settings-icon">📥</span><span class="settings-label">I-download ang aking Data</span></div>
+      <span class="settings-arrow">›</span>
+    </div>
+    <div class="settings-item" onclick="showToast('Naipadala na ang kahilingan sa pagtanggal')">
+      <div class="settings-item-left"><span class="settings-icon">🗑️</span><span class="settings-label">I-delete ang aking Account</span></div>
+      <span class="settings-arrow" style="color:var(--accent3)">›</span>
+    </div>
+    <div class="settings-item" onclick="logout()">
+      <div class="settings-item-left"><span class="settings-icon">🚪</span><span class="settings-label">Mag-logout</span></div>
+      <span class="settings-arrow">›</span>
+    </div>
+  </div>
+  <div style="text-align:center;padding:20px;font-size:11px;color:var(--muted)">
+    BayanihanQuest v1.0 · Araling Panlipunan Grade 8<br>
+    Sumusunod sa RA 10173 — Data Privacy Act of 2012<br>
+    © 2025 BayanihanQuest · Para sa mga estudyante ng Pilipinas
+  </div>
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="goScreen('home')"><span class="nav-icon">🏠</span><span>Home</span></div>
+    <div class="nav-item" onclick="goScreen('map')"><span class="nav-icon">🗺️</span><span>Mapa</span></div>
+    <div class="nav-item" onclick="goScreen('journal')"><span class="nav-icon">📓</span><span>Journal</span></div>
+    <div class="nav-item active" onclick="goScreen('profile')"><span class="nav-icon">👤</span><span>Profile</span></div>
+  </div>
+</div>
+
+<!-- ============================================================ JAVASCRIPT -->
+<script>
+/* ==================== STATE ==================== */
+const state = {
+  user: null,
+  xp: 240,
+  missions_done: 3,
+  journal: [],
+  current_mission: 'inflation'
+};
+
+/* ==================== CURRICULUM DATA ==================== */
+const missions = {
+  q1: [
+    { id:'q1m1', emoji:'📍', name:'Nasaan Ka Ngayon?', topic:'Limang Tema ng Heograpiya · Lokasyon', xp:70, type:'Mapa', tags:['tag-field','tag-map'] },
+    { id:'q1m2', emoji:'⛰️', name:'Ang Lupain sa ilalim ng iyong Paa', topic:'Topograpiya · Anyong Lupa at Tubig', xp:80, type:'Mapa', tags:['tag-map','tag-data'] },
+    { id:'q1m3', emoji:'🌦️', name:'Klima Natin, Buhay Natin', topic:'Klima · Yamang Likas', xp:80, type:'Field', tags:['tag-field','tag-compare'] },
+    { id:'q1m4', emoji:'🌏', name:'Ang Mundo sa Isang Silid', topic:'Heograpiyang Pantao · Kultura · Wika · Relihiyon', xp:90, type:'Interview', tags:['tag-interview','tag-compare'] },
+    { id:'q1m5', emoji:'🦴', name:'Saan Nanggaling ang Tao?', topic:'Prehistoriko · Kondisyong Heograpiko', xp:80, type:'Mapa', tags:['tag-story','tag-map'] },
+    { id:'q1m6', emoji:'🏹', name:'Mangangaso o Magsasaka?', topic:'Pamumuhay ng mga Unang Tao', xp:90, type:'Roleplay', tags:['tag-roleplay','tag-compare'] },
+    { id:'q1m7', emoji:'🪨', name:'Bato, Tanso, Bakal', topic:'Mga Yugto sa Panahong Prehistoriko', xp:80, type:'Timeline', tags:['tag-data','tag-create'] },
+    { id:'q1m8', emoji:'🌊', name:'Ilog = Kabihasnan', topic:'Kabihasnan + Heograpiya · Synthesis Mission', xp:70, type:'Debate', tags:['tag-map','tag-debate'] }
+  ],
+  q2: [
+    { id:'q2m1', emoji:'🐂', name:'Ang Unang Europa', topic:'Kabihasnang Minoan at Mycenean', xp:80, type:'Mapa', tags:['tag-story','tag-map'] },
+    { id:'q2m2', emoji:'🏛️', name:'Athens o Sparta?', topic:'Kabihasnan ng Greece · City-States', xp:100, type:'Debate', tags:['tag-debate','tag-roleplay'] },
+    { id:'q2m3', emoji:'🦅', name:'Pagtaas at Pagbagsak ng Roma', topic:'Imperyong Romano · Tugatog at Pagbagsak', xp:100, type:'Timeline', tags:['tag-data','tag-compare'] },
+    { id:'q2m4', emoji:'🌍', name:'Hindi Lang Europa', topic:'Mali, Songhai, America, Pacific', xp:90, type:'Mapa', tags:['tag-map','tag-compare'] },
+    { id:'q2m5', emoji:'🎭', name:'Kanilang Pamana, Ating Ginagamit', topic:'Kontribusyon ng Kabihasnang Klasiko', xp:90, type:'Field', tags:['tag-field','tag-create'] },
+    { id:'q2m6', emoji:'⚔️', name:'Ang Pagbabago ng Europa', topic:'Transisyon · Panahon ng Gitnang Panahon', xp:80, type:'Timeline', tags:['tag-story','tag-data'] },
+    { id:'q2m7', emoji:'✝️', name:'Kapangyarihan ng Simbahan', topic:'Simbahang Katoliko · Holy Roman Empire', xp:90, type:'Debate', tags:['tag-debate','tag-compare'] },
+    { id:'q2m8', emoji:'⚔️', name:'Bakit Nagkakagiyera sa Ngalan ng Relihiyon?', topic:'Mga Krusada · Holy War', xp:100, type:'Debate', tags:['tag-debate','tag-roleplay'] },
+    { id:'q2m9', emoji:'👑', name:'Hari, Panginoon, Magsasaka', topic:'Piyudalismo · Manoryalismo · Paglaki ng Lungsod', xp:100, type:'Roleplay', tags:['tag-roleplay','tag-compare'] },
+    { id:'q2m10', emoji:'🔗', name:'Ang Europa at ang Daigdig', topic:'Pandaigdigang Kamalayan · Synthesis Mission', xp:110, type:'Mapa', tags:['tag-map','tag-create'] }
+  ],
+  q3: [
+    { id:'q3m1', emoji:'💰', name:'Ang Bagong Uring Mangangalakal', topic:'Bourgeoisie · Merkantilismo · National Monarchy', xp:90, type:'Roleplay', tags:['tag-roleplay','tag-compare'] },
+    { id:'q3m2', emoji:'🎨', name:'Sining, Agham, at Pagbabago', topic:'Renaissance · Repormasyon · Simbahang Katoliko', xp:90, type:'Create', tags:['tag-create','tag-story'] },
+    { id:'q3m3', emoji:'⛵', name:'Paglalakbay para sa Kayamanan', topic:'Unang Yugto ng Imperyalismo at Kolonisasyon', xp:100, type:'Mapa', tags:['tag-map','tag-data'] },
+    { id:'q3m4', emoji:'🔍', name:'Sino ang Nakinabang?', topic:'Dahilan at Epekto ng Unang Yugto ng Kolonyalismo', xp:100, type:'Debate', tags:['tag-debate','tag-compare'] },
+    { id:'q3m5', emoji:'🔬', name:'Rebolusyong Siyentipiko', topic:'Enlightenment · Rebolusyong Siyentipiko', xp:100, type:'Debate', tags:['tag-debate','tag-story'] },
+    { id:'q3m6', emoji:'⚙️', name:'Ang Makina ay Nagbago ng Lahat', topic:'Rebolusyong Industriyal', xp:100, type:'Field', tags:['tag-field','tag-data'] },
+    { id:'q3m7', emoji:'🗺️', name:'Ikalawang Alon ng Kolonyalismo', topic:'Ikalawang Yugto ng Kolonyalismo at Imperyalismo', xp:110, type:'Mapa', tags:['tag-map','tag-compare'] },
+    { id:'q3m8', emoji:'🗽', name:'Kalayaan, Pagkakapantay-pantay, Kapatiran', topic:'Rebolusyong Pranses at Amerikano', xp:100, type:'Roleplay', tags:['tag-roleplay','tag-debate'] },
+    { id:'q3m9', emoji:'🏳️', name:'Pagmamahal sa Sariling Bansa', topic:'Nasyonalismo sa Europa at sa Daigdig', xp:110, type:'Interview', tags:['tag-interview','tag-create'] },
+    { id:'q3m10', emoji:'📜', name:'Paano Nagbago ang Mundo?', topic:'Synthesis Mission · Q3 Wrap-up', xp:100, type:'Create', tags:['tag-data','tag-create'] }
+  ],
+  q4: [
+    { id:'q4m1', emoji:'💥', name:'Isang Bala ang Nagpaputok ng Digmaan', topic:'Mga Dahilan ng Unang Digmaang Pandaigdig', xp:90, type:'Timeline', tags:['tag-data','tag-story'] },
+    { id:'q4m2', emoji:'🪖', name:'Sa Loob ng Trenches', topic:'Mahahalagang Pangyayari sa WWI', xp:100, type:'Roleplay', tags:['tag-roleplay','tag-story'] },
+    { id:'q4m3', emoji:'🕊️', name:'Pagkatapos ng Digmaan, May Kapayapaan Ba?', topic:'Epekto ng WWI · League of Nations', xp:90, type:'Debate', tags:['tag-debate','tag-compare'] },
+    { id:'q4m4', emoji:'📉', name:'Paano Nagsimula Muli?', topic:'Mga Dahilan ng Ikalawang Digmaang Pandaigdig', xp:100, type:'Timeline', tags:['tag-data','tag-compare'] },
+    { id:'q4m5', emoji:'🌐', name:'D-Day, Hiroshima, Holocaust', topic:'Mahahalagang Pangyayari sa WWII', xp:110, type:'Mapa', tags:['tag-map','tag-story'] },
+    { id:'q4m6', emoji:'🇺🇳', name:'Nagtagumpay ba ang Kapayapaan?', topic:'Epekto ng WWII · UN', xp:100, type:'Debate', tags:['tag-debate','tag-roleplay'] },
+    { id:'q4m7', emoji:'🔴', name:'Komunismo o Kapitalismo?', topic:'Mga Ideolohiya · Cold War', xp:100, type:'Debate', tags:['tag-debate','tag-compare'] },
+    { id:'q4m8', emoji:'🔗', name:'Bagong Anyo ng Kolonyalismo', topic:'Neokolonyalismo at mga Papaunlad na Bansa', xp:100, type:'Field', tags:['tag-field','tag-compare'] },
+    { id:'q4m9', emoji:'🤝', name:'Ang UN, ASEAN, at Tayo', topic:'Pandaigdigang Organisasyon at Pangkat', xp:100, type:'Interview', tags:['tag-interview','tag-create'] },
+    { id:'q4m10', emoji:'🏙️', name:'Ang Daigdig Ko', topic:'Kontemporaryong Isyu · Community Connection', xp:110, type:'Field', tags:['tag-field','tag-story'] },
+    { id:'q4m11', emoji:'✊', name:'Ikaw ang Solusyon', topic:'Final Synthesis · Grade 8 Capstone', xp:100, type:'Create', tags:['tag-create','tag-debate'] }
+  ]
+};
+
+const createPrompts = {
+  essay: 'Ipaliwanag kung paano nakaapekto ang Rebolusyong Industriyal sa buhay ng mga manggagawa — at ikonekta ito sa isang katotohanan sa inyong komunidad ngayon.',
+  letter: 'Sumulat ng liham bilang isang manggagawa noong panahon ng Rebolusyong Industriyal. Ano ang iyong nararamdaman at hinihiling?',
+  headline: 'Gumawa ng 5 headline para sa isang diyaryo noong panahon ng Rebolusyong Industriyal.',
+  speech: 'Ikaw ay isang lider ng mga manggagawa. Magsulat ng maikling talumpati para sa iyong mga kasama.',
+  comic: 'Gumawa ng script para sa isang komiks na may 4 na panel na nagpapakita ng buhay noong Rebolusyong Industriyal.'
+};
+
+const roleplayConsequences = {
+  a: '<span class="consequence-title">Resulta ng iyong desisyon:</span>Tinanggap mo ang alok. Ngayon ikaw ay isang <em>serf</em> — protektado, ngunit hindi malaya. Ang iyong anak at apo ay awtomatikong magiging serf din. Ito ang puso ng Piyudalismo — isang sistema kung saan ang kalayaan ay ipinagpalit para sa seguridad.',
+  b: '<span class="consequence-title">Resulta ng iyong desisyon:</span>Tinanggihan mo ang alok. Malaya ka — ngunit walang proteksyon. Sa panahon ng mga mandaraubing grupo at digmaan, napakahirap mabuhay nang mag-isa. Maraming magsasaka ang napilitang bumalik at tanggapin ang mas masamang kondisyon.',
+  c: '<span class="consequence-title">Resulta ng iyong desisyon:</span>Subukan mong makipag-negotiate. Ilang panginoon ang pumayag sa mas magaan na kondisyon — ito ang simula ng pagbabago ng Piyudalismo tungo sa mas flexible na sistema sa paglaon ng panahon.'
+};
+
+/* ==================== NAV FUNCTIONS ==================== */
+function goScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function goHome() { goScreen('home'); }
+
+function openMission(missionId) {
+  state.current_mission = missionId;
+  const titles = {
+    inflation: 'Bakit Mahal ang Bigas?',
+    athens: 'Athens o Sparta?',
+    feudalism: 'Hari, Panginoon, Magsasaka',
+    colonialism: 'Sino ang Nakinabang?',
+    revolution: 'Ang Makina ay Nagbago ng Lahat',
+    wwi: 'Isang Bala ang Nagpaputok ng Digmaan'
+  };
+  const metas = {
+    inflation: 'Q3 · Ekonomiya · Hakbang 2 ng 4',
+    athens: 'Q2 · Kasaysayan · Debate Activity',
+    feudalism: 'Q2 · Piyudalismo · Roleplay Activity',
+    colonialism: 'Q3 · Kasaysayan · Debate Activity',
+    revolution: 'Q3 · Industriyal · Create Activity',
+    wwi: 'Q4 · Kasaysayan · Timeline Activity'
+  };
+  document.getElementById('mission-title-bar').textContent = titles[missionId] || 'Misyon';
+  document.getElementById('mission-meta-bar').textContent = metas[missionId] || '';
+  goScreen('mission');
+}
+
+/* ==================== LOGIN ==================== */
+function switchLoginTab(tab) {
+  document.querySelectorAll('.login-tab').forEach((t, i) => t.classList.toggle('active', ['student','teacher'][i] === tab));
+  document.getElementById('login-student').classList.toggle('active', tab === 'student');
+  document.getElementById('login-teacher').classList.toggle('active', tab === 'teacher');
+}
+
+function loginStudent() {
+  const name = document.getElementById('student-name').value.trim();
+  const code = document.getElementById('class-code').value.trim().toUpperCase();
+  const consent = document.getElementById('consent').checked;
+  if (!name) { showToast('Pakiusap ilagay ang iyong pangalan.'); return; }
+  if (code.length < 4) { showToast('Ang class code ay dapat 4-6 na character.'); return; }
+  if (!consent) { showToast('Kailangan ng pahintulot bago gamitin ang app.'); return; }
+  state.user = { name, code, type: 'student' };
+  updateUserUI(name);
+  goScreen('home');
+  setTimeout(() => showXPModal('Maligayang pagdating, ' + name + '!', 'Handa ka na bang maging Tagasaliksik?', '+50 XP'), 600);
+}
+
+function loginTeacher() {
+  state.user = { name: 'Guro', type: 'teacher' };
+  updateUserUI('Guro');
+  goScreen('home');
+  showToast('Class code: GRD8-2025 — ibigay ito sa mga estudyante!');
+}
+
+function logout() {
+  state.user = null;
+  document.getElementById('student-name').value = '';
+  document.getElementById('class-code').value = '';
+  document.getElementById('consent').checked = false;
+  goScreen('login');
+}
+
+function updateUserUI(name) {
+  const initial = name.charAt(0).toUpperCase();
+  document.getElementById('user-avatar-sm').textContent = initial;
+  document.getElementById('user-name-sm').textContent = name;
+  document.getElementById('profile-avatar').textContent = initial;
+  document.getElementById('profile-name').textContent = name;
+  if (state.user && state.user.code) {
+    document.getElementById('profile-class').textContent = 'Grade 8 · Class ' + state.user.code;
+  }
+}
+
+/* ==================== ACTIVITY TABS ==================== */
+function switchActivity(id) {
+  document.querySelectorAll('.activity-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.activity-panel').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('panel-' + id).classList.add('active');
+}
+
+/* ==================== FIELD OBSERVATION ==================== */
+function updateProgress(textareaId, fillId, labelId, minWords) {
+  const text = document.getElementById(textareaId).value.trim();
+  const words = text ? text.split(/\s+/).filter(w => w).length : 0;
+  const pct = Math.min(100, Math.round(words / minWords * 100));
+  document.getElementById(fillId).style.width = pct + '%';
+  document.getElementById(labelId).textContent = words + ' salita';
+}
+
+function fakeUpload() {
+  document.getElementById('photo-icon').textContent = '✅';
+  document.getElementById('photo-upload').innerHTML = '<span class="photo-icon">✅</span>Larawang na-upload!';
+  document.getElementById('photo-upload').style.borderColor = 'var(--accent2)';
+  document.getElementById('photo-upload').style.color = 'var(--accent2)';
+}
+
+/* ==================== DEBATE ==================== */
+let stanceChosen = null;
+let evidenceCount = 2;
+
+function chooseStance(s) {
+  stanceChosen = s;
+  document.getElementById('stance-athens').classList.toggle('chosen', s === 'athens');
+  document.getElementById('stance-sparta').classList.toggle('chosen', s === 'sparta');
+}
+
+function addEvidence() {
+  evidenceCount++;
+  const d = document.createElement('div');
+  d.className = 'evidence-block';
+  d.innerHTML = `<label>Ebidensya ${evidenceCount}</label><textarea rows="2" placeholder="Karagdagang dahilan..."></textarea>`;
+  document.getElementById('evidence-container').appendChild(d);
+}
+
+/* ==================== ROLEPLAY ==================== */
+function pickChoice(c) {
+  ['a','b','c'].forEach(x => {
+    document.getElementById('choice-' + x).classList.remove('chosen');
+    document.getElementById('cl-' + x).style.background = 'var(--surface3)';
+    document.getElementById('cl-' + x).style.color = 'var(--muted)';
+  });
+  document.getElementById('choice-' + c).classList.add('chosen');
+  document.getElementById('cl-' + c).style.background = 'rgba(167,139,250,0.2)';
+  document.getElementById('cl-' + c).style.color = 'var(--purple)';
+  const box = document.getElementById('consequence-box');
+  box.innerHTML = roleplayConsequences[c];
+  box.classList.add('show');
+}
+
+/* ==================== CREATE ==================== */
+function setOutputType(el, type) {
+  document.querySelectorAll('.output-type').forEach(e => e.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('create-prompt-box').innerHTML = '<strong>Prompt:</strong> ' + createPrompts[type];
+  document.getElementById('create-text').value = '';
+  document.getElementById('create-wc').textContent = '0 salita';
+  document.getElementById('create-prog').style.width = '0%';
+}
+
+function updateCreateProgress() {
+  const text = document.getElementById('create-text').value.trim();
+  const words = text ? text.split(/\s+/).filter(w => w).length : 0;
+  const pct = Math.min(100, Math.round(words / 80 * 100));
+  document.getElementById('create-prog').style.width = pct + '%';
+  document.getElementById('create-wc').textContent = words + ' salita';
+}
+
+/* ==================== SUBMIT ACTIVITY ==================== */
+function submitActivity(type, feedbackId) {
+  const xpGain = { 'Field Observation': 30, 'Debate': 50, 'Roleplay': 50, 'Create': 60 }[type] || 40;
+  state.xp += xpGain;
+  state.missions_done++;
+  const date = new Date().toLocaleDateString('fil-PH', { year:'numeric', month:'short', day:'numeric' });
+  state.journal.unshift({ type, date, mission: document.getElementById('mission-title-bar').textContent });
+  renderJournal();
+  updateXPUI();
+  document.getElementById(feedbackId).classList.add('show');
+  setTimeout(() => showXPModal('Napakahusay!', 'Naisumite mo ang iyong ' + type + '!', '+' + xpGain + ' XP'), 800);
+}
+
+/* ==================== MAP ==================== */
+function renderMap() {
+  ['q1','q2','q3','q4'].forEach(q => {
+    const container = document.getElementById('missions-' + q);
+    if (!container) return;
+    container.innerHTML = '';
+    missions[q].forEach((m, i) => {
+      const tagHTML = m.tags.map(t => `<span class="tag ${t}">${t.replace('tag-','')}</span>`).join('');
+      container.innerHTML += `
+        <div class="map-mission-row" onclick="openMission('${m.id}')">
+          <span class="map-mission-xp">+${m.xp} XP</span>
+          <div class="map-mission-num">${i+1}</div>
+          <div class="map-mission-content">
+            <div class="map-mission-title">${m.emoji} ${m.name}</div>
+            <div class="map-mission-topic">${m.topic}</div>
+            <div class="map-mission-tags">${tagHTML}<span class="tag tag-data">${m.type}</span></div>
+          </div>
+        </div>`;
+    });
+  });
+}
+
+function switchMapQ(q) {
+  document.querySelectorAll('.map-qtab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.quarter-panel').forEach(p => p.classList.remove('active'));
+  document.querySelector('.map-qtab.' + q).classList.add('active');
+  document.getElementById('qpanel-' + q).classList.add('active');
+}
+
+/* ==================== JOURNAL ==================== */
+function renderJournal() {
+  const container = document.getElementById('journal-entries');
+  if (state.journal.length === 0) {
+    container.innerHTML = `<div class="journal-empty"><span class="journal-empty-icon">📓</span><div style="font-family:var(--font-head);font-size:16px;color:var(--text);margin-bottom:6px">Walang entry pa</div><div style="font-size:13px">Kumpletuhin ang iyong unang aktibidad para makita ang iyong mga sagot dito.</div></div>`;
+    return;
+  }
+  container.innerHTML = state.journal.map(e => `
+    <div class="journal-entry">
+      <div class="journal-entry-header">
+        <div class="journal-mission">${e.mission}</div>
+        <div class="journal-date">${e.date}</div>
+      </div>
+      <div class="journal-type"><span class="tag tag-field">${e.type}</span></div>
+      <div class="journal-preview">Naisumite na ang iyong ${e.type}. Tingnan ang iyong buong sagot sa loob ng misyon.</div>
+    </div>`).join('');
+}
+
+/* ==================== XP & UI ==================== */
+function updateXPUI() {
+  const xp = state.xp;
+  const levelXP = 400;
+  const pct = Math.min(100, Math.round((xp % levelXP) / levelXP * 100));
+  const level = Math.floor(xp / levelXP) + 1;
+  document.getElementById('xp-bar').style.width = pct + '%';
+  document.getElementById('xp-label').textContent = xp + ' XP';
+  if (document.getElementById('xp-label-map'))
+    document.getElementById('xp-label-map').textContent = xp + ' XP';
+  document.getElementById('stat-xp').textContent = xp;
+  document.getElementById('stat-missions').textContent = state.missions_done;
+}
+
+/* ==================== TOAST ==================== */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* ==================== XP MODAL ==================== */
+function showXPModal(title, desc, amount) {
+  document.getElementById('modal-xp-title').textContent = title;
+  document.getElementById('modal-xp-desc').textContent = desc;
+  document.getElementById('modal-xp-amount').textContent = amount;
+  document.getElementById('modal-xp').classList.add('show');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('show');
+}
+
+/* ==================== INIT ==================== */
+document.addEventListener('DOMContentLoaded', () => {
+  renderMap();
+  renderJournal();
+  updateXPUI();
+});
+</script>
+</body>
+</html>
